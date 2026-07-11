@@ -57,13 +57,18 @@ async function loadChunkedImage(image) {
   if (!chunkPaths?.length) return;
 
   try {
-    const chunks = await Promise.all(
+    const results = await Promise.allSettled(
       chunkPaths.map(async (path) => {
         const response = await fetch(path);
         if (!response.ok) throw new Error(`Unable to load ${path}`);
         return response.text();
       })
     );
+    const chunks = results
+      .filter((result) => result.status === 'fulfilled')
+      .map((result) => result.value);
+    if (!chunks.length) throw new Error('No image data was loaded.');
+
     image.src = `data:image/webp;base64,${chunks.join('')}`;
     image.hidden = false;
     image.parentElement?.classList.add('is-loaded');
