@@ -135,9 +135,7 @@
               <details class="abstract-toggle">
                 <summary>[Abs]</summary>
                 <p>
-                  This work presents a multi-stage caster-aware control framework that combines
-                  uncertainty-aware nonlinear model predictive control with an RL-based execution layer
-                  for robust tracking of caster-equipped industrial mobile robots.
+                  Freely swiveling casters are widely adopted in industrial AMRs/SDVs for their mechanical simplicity and load capacity. However, caster misalignment during low-speed or high-curvature maneuvers induces strong contact nonlinearities, widening the planning-execution gap between commanded (v, ω) and realized motion. Existing caster-aware strategies are highly sensitive to state-estimation reliability, causing unstable execution in uncertain transition regimes. To address this, we present Multi-Stage Caster-aware Control (MSC), a planning-execution integrated hierarchical framework featuring two core mechanisms. First, an uncertainty-aware NMPC (CU-MPC) dynamically schedules caster-aware costs and input regularization using predictive uncertainty to suppress overly aggressive maneuvers. Second, a reinforcement learning-based execution layer estimates and predicts caster states under partial observability, transforming high-level velocity commands into physically executable wheel speeds adapted to current contact conditions. Validations in Isaac Sim and real robots demonstrate that MSC offers a clear comparative advantage over existing decoupled compensation approaches by significantly improving caster-state estimation accuracy, minimizing misalignment, and enhancing tracking robustness in caster-sensitive maneuvers.
                 </p>
               </details>
               <span class="disabled-link">[Paper — coming soon]</span>
@@ -159,19 +157,18 @@
             <p class="authors">
               S. Lee, J. Lee, <strong>J. Lim</strong>, J. Kang, B. Lee, S. Han, K. H. Choi, D. Park, and K. S. Kim
             </p>
-            <p class="venue"><em>ICRA — Under Review</em></p>
+            <p class="venue"><em>ICRA</em> — <em>Under Review</em></p>
             <p class="preprint-line"><em>arXiv preprint arXiv:2607.03454</em></p>
             <div class="publication-links">
               <details class="abstract-toggle">
                 <summary>[Abs]</summary>
                 <p>
-                  This preprint studies adversarial dynamics priors for learning physically grounded
-                  humanoid locomotion behaviors from motion data while retaining dynamic feasibility.
+                  In this paper, we propose Adversarial Dynamics Priors (ADP) for perturbation-resilient humanoid locomotion control. Existing motion prior-based methods induce natural motion styles by imitating kinematic motion features, but they do not directly regularize dynamics features, such as CoM motion, centroidal momentum, contact forces, and contact states. To address this limitation, we replace kinematic motion-style features with selected dynamics features extracted from locomotion trajectories as the target of adversarial regularization. To this end, we use trajectory optimization to construct a reference dataset and train a discriminator to evaluate whether policy-induced temporal windows are consistent with the resulting reference distribution. Without explicit motion tracking, ADP encourages policy rollouts to remain close to the reference support, even after perturbations. Experimental results show that, compared with AMP, the strongest baseline in our evaluation, ADP improves the 80%-success impulse threshold (J80) by 16.7%, while reducing direction-averaged recovery time and velocity tracking error by 47.9% and 35.4%, respectively.
                 </p>
               </details>
               <a href="https://arxiv.org/abs/2607.03454" target="_blank" rel="noreferrer">[arXiv]</a>
               <a href="https://arxiv.org/pdf/2607.03454" target="_blank" rel="noreferrer">[Paper]</a>
-              <!-- Add a project-page link here later: <a href="PROJECT_URL">[Website]</a> -->
+              <!-- Add a project-page link later with: <a href="PROJECT_URL">[Website]</a> -->
             </div>
           </div>
         </article>
@@ -188,9 +185,7 @@
           <h3>Humanoid</h3>
           <div class="project-grid">
             <a class="project-card" href="projects/humanoid-motor-primitives.html">
-              <div class="project-cover cover-humanoid">
-                <span>MoP</span>
-              </div>
+              <div class="project-cover cover-humanoid"><span>MoP</span></div>
               <div class="project-copy">
                 <h4>Motor Primitive Learning for Humanoid Motion</h4>
                 <p>Reusable motion units and spatiotemporal composition for diverse humanoid behaviors.</p>
@@ -205,9 +200,7 @@
           <h3>AMR</h3>
           <div class="project-grid">
             <a class="project-card" href="projects/caster-aware-amr.html">
-              <div class="project-cover cover-amr">
-                <span>MSC</span>
-              </div>
+              <div class="project-cover cover-amr"><span>MSC</span></div>
               <div class="project-copy">
                 <h4>Caster-Aware Control for Industrial AMRs</h4>
                 <p>Uncertainty-aware NMPC, state estimation, and RL-based execution for passive-caster dynamics.</p>
@@ -224,8 +217,17 @@
       <div class="section-title compact-title">
         <h2>Contact</h2>
       </div>
-      <p>For research discussions or project inquiries, please contact me through GitHub.</p>
-      <a class="text-link" href="https://github.com/JeonghyeokLim" target="_blank" rel="noreferrer">GitHub profile →</a>
+      <div class="social-links" aria-label="Academic and professional profiles">
+        <a class="social-button" href="https://scholar.google.com/citations?user=NbPGQn8AAAAJ&hl=en" target="_blank" rel="noreferrer" aria-label="Google Scholar" title="Google Scholar">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 8.2l10 5.2 8-4.2V15h2V8.2L12 3Zm-6.4 8.1v4.2c0 1.8 3 3.7 6.4 3.7s6.4-1.9 6.4-3.7v-4.2L12 14.4l-6.4-3.3Z"/></svg>
+        </a>
+        <a class="social-button" href="https://github.com/JeonghyeokLim" target="_blank" rel="noreferrer" aria-label="GitHub" title="GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .7A11.3 11.3 0 0 0 8.4 22.8c.6.1.8-.3.8-.6v-2.2c-3.4.7-4.1-1.4-4.1-1.4-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.6.1-3.2 0 0 1-.3 3.4 1.2a11.6 11.6 0 0 1 6.2 0c2.4-1.6 3.4-1.2 3.4-1.2.6 1.6.2 2.9.1 3.2.8.9 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A11.3 11.3 0 0 0 12 .7Z"/></svg>
+        </a>
+        <a class="social-button" href="https://www.linkedin.com/in/jeonghyeok-lim" target="_blank" rel="noreferrer" aria-label="LinkedIn" title="LinkedIn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.2 3.5A2.2 2.2 0 1 1 5.2 8a2.2 2.2 0 0 1 0-4.5ZM3.3 9.7h3.8V21H3.3V9.7Zm6.1 0h3.7v1.5h.1c.5-.9 1.8-1.9 3.7-1.9 4 0 4.7 2.6 4.7 6V21h-3.8v-5c0-1.2 0-2.8-1.8-2.8s-2 1.3-2 2.7V21H9.4V9.7Z"/></svg>
+        </a>
+      </div>
     </section>
   </main>
 
