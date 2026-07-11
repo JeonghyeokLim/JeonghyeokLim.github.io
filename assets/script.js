@@ -1,27 +1,8 @@
 const root = document.documentElement;
 const nav = document.querySelector('.site-nav');
-
-// Add the CV item to the main navigation until a full CV is uploaded.
-if (nav && !nav.querySelector('[data-cv-link]')) {
-  const cvLink = document.createElement('a');
-  cvLink.href = 'cv.html';
-  cvLink.textContent = 'CV';
-  cvLink.dataset.cvLink = 'true';
-
-  const contactLink = [...nav.querySelectorAll('a')].find(
-    (link) => link.textContent.trim().toLowerCase() === 'contact'
-  );
-
-  if (contactLink) {
-    nav.insertBefore(cvLink, contactLink);
-  } else {
-    nav.appendChild(cvLink);
-  }
-}
-
 const themeToggle = document.querySelector('.theme-toggle');
 const menuToggle = document.querySelector('.menu-toggle');
-const navLinks = [...document.querySelectorAll('.site-nav a')];
+const navLinks = [...document.querySelectorAll('.site-nav a[href^="#"]')];
 const sections = [...document.querySelectorAll('main section[id]')];
 
 const savedTheme = localStorage.getItem('theme');
@@ -49,31 +30,51 @@ menuToggle?.addEventListener('click', () => {
   nav?.classList.toggle('open', !isOpen);
 });
 
-navLinks.forEach((link) => {
+[...document.querySelectorAll('.site-nav a')].forEach((link) => {
   link.addEventListener('click', () => {
     nav?.classList.remove('open');
     menuToggle?.setAttribute('aria-expanded', 'false');
   });
 });
 
-if (sections.length > 0) {
+if (sections.length && navLinks.length) {
   const sectionObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         navLinks.forEach((link) => {
-          const href = link.getAttribute('href');
-          if (href?.startsWith('#')) {
-            link.classList.toggle('active', href === `#${entry.target.id}`);
-          }
+          link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`);
         });
       });
     },
     { rootMargin: '-35% 0px -55% 0px', threshold: 0 }
   );
-
   sections.forEach((section) => sectionObserver.observe(section));
 }
+
+async function loadChunkedImage(image) {
+  const chunkPaths = image.dataset.imageChunks?.split(',').map((item) => item.trim()).filter(Boolean);
+  if (!chunkPaths?.length) return;
+
+  try {
+    const chunks = await Promise.all(
+      chunkPaths.map(async (path) => {
+        const response = await fetch(path);
+        if (!response.ok) throw new Error(`Unable to load ${path}`);
+        return response.text();
+      })
+    );
+    image.src = `data:image/webp;base64,${chunks.join('')}`;
+    image.hidden = false;
+    image.parentElement?.classList.add('is-loaded');
+  } catch (error) {
+    console.error(error);
+    const loadingText = image.parentElement?.querySelector('.media-loading');
+    if (loadingText) loadingText.textContent = 'Figure unavailable';
+  }
+}
+
+document.querySelectorAll('[data-image-chunks]').forEach(loadChunkedImage);
 
 const year = document.getElementById('year');
 if (year) year.textContent = new Date().getFullYear();
