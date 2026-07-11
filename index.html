@@ -26,6 +26,7 @@
         <a href="#news">News</a>
         <a href="#publications">Publication</a>
         <a href="#projects">Projects</a>
+        <a href="cv.html">CV</a>
         <a href="#contact">Contact</a>
       </nav>
       <button class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Toggle light and dark mode">
@@ -71,13 +72,14 @@
       <div class="two-column">
         <div class="prose">
           <p>
-            My research centers on robots that must operate reliably in complex and changing environments.
-            I am particularly interested in combining model-based reasoning with reinforcement learning,
-            imitation learning, and uncertainty-aware state estimation.
+            My research focuses on learning-based control and state estimation for humanoid robots and industrial mobile robots. I am particularly interested in reusable motion representations for diverse humanoid behaviors and robust control under uncertain contact dynamics.
           </p>
           <p>
-            My work spans humanoid locomotion, industrial autonomous mobile robots, autonomous driving,
-            and multi-agent robotic systems.
+            More broadly, I aim to develop reinforcement-learning frameworks that allow robots to reason about their body dynamics and interactions with complex environments, enabling more adaptive and versatile behaviors.
+          </p>
+          <p>
+            If you have any questions or would like to discuss research ideas, feel free to reach out via
+            <a class="inline-link" href="mailto:henricus0973@kaist.ac.kr">email</a>.
           </p>
         </div>
         <dl class="profile-list">
@@ -87,7 +89,11 @@
           </div>
           <div>
             <dt>Education</dt>
-            <dd>M.S. in Mechanical Engineering, KAIST<br />B.S. in Mechanical Engineering, Korea University</dd>
+            <dd>
+              M.S. in Mechanical Engineering, KAIST<br />
+              Exchange Student, RWTH Aachen University <span class="education-date">Aug. 2024 – Mar. 2025</span><br />
+              B.S. in Mechanical Engineering, Korea University
+            </dd>
           </div>
           <div>
             <dt>Research areas</dt>
@@ -131,9 +137,11 @@
       <div class="publication-group">
         <h3>Conference Papers</h3>
         <article id="msc-paper" class="publication-card">
-          <div class="publication-media media-msc" aria-label="Publication media placeholder">
-            <span>MSC</span>
-            <small>Image or video</small>
+          <div class="publication-media publication-figure">
+            <img id="msc-framework-image" class="publication-figure-img" hidden
+              data-image-chunks="assets/figures/msc_1.txt,assets/figures/msc_2.txt,assets/figures/msc_3.txt,assets/figures/msc_4.txt,assets/figures/msc_5.txt,assets/figures/msc_6.txt,assets/figures/msc_7.txt"
+              alt="MSC planning-execution integrated control framework" />
+            <span class="media-loading">MSC framework</span>
           </div>
           <div class="publication-content">
             <h4>MSC: Multi-Stage Caster-aware Control Framework with Uncertainty-Aware NMPC and RL-based Execution Layer</h4>
@@ -159,9 +167,11 @@
       <div class="publication-group">
         <h3>Preprints</h3>
         <article class="publication-card">
-          <div class="publication-media media-adp" aria-label="Publication media placeholder">
-            <span>ADP</span>
-            <small>Image or video</small>
+          <div class="publication-media publication-figure">
+            <img id="adp-framework-image" class="publication-figure-img" hidden
+              data-image-chunks="assets/figures/adp_1.txt,assets/figures/adp_2.txt,assets/figures/adp_3.txt,assets/figures/adp_4.txt,assets/figures/adp_5.txt,assets/figures/adp_6.txt,assets/figures/adp_7.txt"
+              alt="ADP framework for adversarial dynamics-prior learning" />
+            <span class="media-loading">ADP framework</span>
           </div>
           <div class="publication-content">
             <h4>ADP: Adversarial Dynamics Priors for Physically Grounded Humanoid Locomotion</h4>
@@ -179,7 +189,6 @@
               </details>
               <a href="https://arxiv.org/abs/2607.03454" target="_blank" rel="noreferrer">[arXiv]</a>
               <a href="https://arxiv.org/pdf/2607.03454" target="_blank" rel="noreferrer">[Paper]</a>
-              <!-- Add a project-page link later with: <a href="PROJECT_URL">[Website]</a> -->
             </div>
           </div>
         </article>
@@ -225,6 +234,9 @@
     <section id="contact" class="section container contact">
       <div class="section-title compact-title"><h2>Contact</h2></div>
       <div class="social-links" aria-label="Academic and professional profiles">
+        <a class="social-button" href="mailto:henricus0973@kaist.ac.kr" aria-label="Email" title="Email">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v14H3V5Zm1.8 2 7.2 5.3L19.2 7H4.8Zm14.7 10V9.6L12 15.1 4.5 9.6V17h15Z"/></svg>
+        </a>
         <a class="social-button" href="https://scholar.google.com/citations?user=NbPGQn8AAAAJ&hl=en" target="_blank" rel="noreferrer" aria-label="Google Scholar" title="Google Scholar">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 8.2l10 5.2 8-4.2V15h2V8.2L12 3Zm-6.4 8.1v4.2c0 1.8 3 3.7 6.4 3.7s6.4-1.9 6.4-3.7v-4.2L12 14.4l-6.4-3.3Z"/></svg>
         </a>
