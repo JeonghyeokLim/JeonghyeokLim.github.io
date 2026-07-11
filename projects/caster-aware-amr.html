@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Caster-Aware Control for Industrial AMRs — Jeonghyeok Lim" />
-  <title>Caster-Aware Control for Industrial AMRs | Jeonghyeok Lim</title>
+  <meta name="description" content="MSC: Multi-Stage Caster-aware Control for industrial AMRs — Jeonghyeok Lim" />
+  <title>MSC: Multi-Stage Caster-aware Control | Jeonghyeok Lim</title>
   <script>
     document.documentElement.dataset.theme = localStorage.getItem('theme') ||
       (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
@@ -25,95 +25,186 @@
   <main>
     <section class="detail-hero container">
       <p class="label">AMR · IROS 2026</p>
-      <h1>Caster-Aware Control for Industrial AMRs</h1>
-      <p class="detail-meta">Jeonghyeok Lim · Multi-Stage Caster-aware Control (MSC)</p>
+      <h1>MSC: Multi-Stage Caster-aware Control</h1>
+      <p class="detail-subtitle">Uncertainty-aware NMPC and an RL-based execution layer for caster-equipped industrial mobile robots</p>
+      <p class="detail-meta">
+        Jinho Park<sup>*</sup>, Jeongtae Lee<sup>*</sup>, <strong>Jeonghyeok Lim<sup>*</sup></strong>,
+        Keun Ha Choi<sup>†</sup>, and Kyung-Soo Kim<sup>†</sup>
+      </p>
+      <p class="author-note"><sup>*</sup> Equal contribution. <sup>†</sup> Corresponding authors.</p>
+      <div class="project-badges">
+        <span>IROS 2026</span><span>CU-MPC</span><span>Reinforcement Learning</span><span>Real-Robot Validation</span>
+      </div>
     </section>
 
     <section class="detail-layout container">
       <div>
-        <div class="detail-media-stack">
-          <figure class="detail-media-block">
-            <img
-              src="../assets/figures/%EA%B7%B8%EC%9C%BC%EB%A6%BC0.png"
-              alt="MSC framework combining CU-MPC, recurrent caster-state estimation, and an RL execution layer" />
-            <figcaption>
-              Overview of the MSC framework. A caster-uncertainty-aware high-level controller generates linear and angular velocity references, while the recurrent low-level policy estimates latent caster dynamics and converts those references into executable wheel-velocity targets.
-            </figcaption>
-          </figure>
-
-          <figure class="detail-media-block">
-            <video autoplay muted loop playsinline controls preload="metadata"
-              poster="../assets/figures/%EA%B7%B8%EC%9C%BC%EB%A6%BC0.png">
-              <source src="../assets/videos/MSC%20%EB%8F%99%EC%98%81%EC%83%81_compressed.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-            <figcaption>
-              Short MSC experiment preview. The clip starts automatically without sound and repeats continuously.
-            </figcaption>
-          </figure>
-
-          <figure class="detail-media-block">
-            <video controls playsinline preload="metadata"
-              poster="../assets/figures/%EA%B7%B8%EC%9C%BC%EB%A6%BC0.png">
-              <source src="../assets/videos/IROS26_3480_VI_fi.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-            <figcaption>
-              Full project explanation video prepared for the IROS 2026 submission. Playback is user-controlled so the presentation can be viewed with audio.
-            </figcaption>
-          </figure>
-        </div>
+        <figure class="detail-media-block hero-framework">
+          <img
+            src="../assets/figures/%EA%B7%B8%EC%9C%BC%EB%A6%BC0.png"
+            alt="Overall MSC framework combining CU-MPC, recurrent caster-state estimation, and an RL execution layer" />
+          <figcaption>
+            Overall MSC architecture. CU-MPC generates local body-velocity references, while the recurrent execution layer estimates and predicts hidden caster states and maps the references to executable wheel-speed commands.
+          </figcaption>
+        </figure>
 
         <section class="detail-section">
-          <h2>Overview</h2>
+          <h2>Why Caster-Aware Control?</h2>
           <p>
-            Industrial autonomous mobile robots commonly use passive caster wheels because they provide high load capacity with a simple mechanical structure. During low-speed turns and high-curvature maneuvers, however, caster misalignment produces nonlinear contact forces and a substantial gap between the commanded body velocity and the motion realized by the robot.
+            Passive caster wheels are mechanically simple and well suited to high-payload industrial AMRs, but their swivel direction is not directly actuated. During low-speed turns, in-place rotations, high-curvature cornering, and forward–reverse transitions, caster misalignment produces lateral scrub forces and resistive reaction torque. The result is a planning–execution gap: a velocity command that is feasible in the planner may be difficult for the drivetrain to realize physically.
           </p>
           <p>
-            Multi-Stage Caster-aware Control (MSC) addresses this planning–execution gap through a hierarchical framework that combines uncertainty-aware nonlinear model predictive control with a recurrent, reinforcement-learning-based execution layer. Rather than treating caster compensation as a separate post-processing step, MSC coordinates high-level motion planning, latent caster-state inference, and wheel-level execution within one control pipeline.
+            Existing solutions typically handle this problem at only one level. Low-level compensation reacts after a command has already been planned, whereas caster-aware planning can become unreliable when caster-state estimates are delayed or uncertain. MSC addresses both issues jointly by coordinating uncertainty-aware planning with contact-consistent low-level execution.
           </p>
         </section>
 
         <section class="detail-section">
-          <h2>Control Architecture</h2>
-          <div class="framework-flow">
+          <h2>Core Contributions</h2>
+          <div class="framework-flow contribution-flow">
             <article>
-              <h3>1. CU-MPC Planning</h3>
-              <p>
-                The high-level controller tracks the reference path while accounting for position, body velocity, angular velocity, caster state, and uncertainty. Predictive uncertainty is used to regulate caster-aware costs and avoid overly aggressive commands in sensitive transition regimes.
-              </p>
+              <h3>Integrated Hierarchy</h3>
+              <p>Planning, latent caster-state inference, short-horizon prediction, and wheel-level execution are coupled in one control loop rather than treated as independent modules.</p>
             </article>
             <article>
-              <h3>2. Recurrent State Inference</h3>
-              <p>
-                A GRU encoder processes an observation history and forms a latent representation of the partially observed caster dynamics. A decoder estimates the current caster configuration and predicts its near-term distribution.
-              </p>
+              <h3>CU-MPC</h3>
+              <p>Predictive caster uncertainty adjusts the caster-alignment cost and input regularization over the NMPC horizon, reducing reliance on uncertain state predictions.</p>
             </article>
             <article>
-              <h3>3. RL-Based Execution</h3>
-              <p>
-                The actor transforms the high-level linear and angular velocity references into wheel-velocity targets adapted to the inferred contact condition. A wheel-level PI controller then applies the corresponding torque commands to the simulated or physical AMR.
-              </p>
+              <h3>RL Execution Layer</h3>
+              <p>A recurrent actor–critic policy transforms high-level linear and angular velocity references into dynamically executable left/right wheel-speed targets.</p>
             </article>
           </div>
         </section>
 
         <section class="detail-section">
-          <h2>Training and Deployment</h2>
+          <h2>Online Control Pipeline</h2>
+          <ol class="pipeline-list">
+            <li><strong>Sensing:</strong> acquire robot state and a temporal history of measurable observations.</li>
+            <li><strong>High-level planning:</strong> CU-MPC computes the local reference command <em>(v, ω)</em>.</li>
+            <li><strong>Caster inference:</strong> a GRU encoder estimates the current left/right caster states and predicts their short-horizon distributions.</li>
+            <li><strong>Risk-aware scheduling:</strong> predicted variance lowers the caster-aware weight and increases input regularization in uncertain transition regimes.</li>
+            <li><strong>Execution:</strong> the actor maps the high-level command to left/right wheel-speed targets, which are tracked by PI motor controllers.</li>
+          </ol>
+          <div class="parameter-strip">
+            <div><span>NMPC horizon</span><strong>63</strong></div>
+            <div><span>Control period</span><strong>0.05 s</strong></div>
+            <div><span>History length</span><strong>16</strong></div>
+            <div><span>Latent dimension</span><strong>48</strong></div>
+            <div><span>Prediction horizon</span><strong>8 steps</strong></div>
+          </div>
+        </section>
+
+        <section class="detail-section">
+          <h2>Project Videos</h2>
+          <div class="detail-media-stack compact-media-stack">
+            <figure class="detail-media-block">
+              <video autoplay muted loop playsinline controls preload="metadata"
+                poster="../assets/figures/%EA%B7%B8%EC%9C%BC%EB%A6%BC0.png">
+                <source src="../assets/videos/MSC%20%EB%8F%99%EC%98%81%EC%83%81_compressed.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <figcaption>Short experiment preview. The clip starts automatically in muted mode and repeats continuously.</figcaption>
+            </figure>
+
+            <figure class="detail-media-block">
+              <video controls playsinline preload="metadata"
+                poster="../assets/figures/%EA%B7%B8%EC%9C%BC%EB%A6%BC0.png">
+                <source src="../assets/videos/IROS26_3480_VI_fi.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <figcaption>Full IROS 2026 project explanation video, including the motivation, architecture, and validation results.</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="detail-section">
+          <h2>Simulation Evaluation</h2>
           <p>
-            During training, privileged caster information supervises the latent estimator and supports critic learning. At deployment, the policy operates from measurable observations and their temporal history, allowing caster-related states to be inferred under partial observability without requiring the privileged simulation signals.
+            The Isaac Sim model matches the differential-drive and passive-caster configuration of the real robot. Evaluation is performed on three distinct M/S/C trajectories containing low-speed turns, in-place rotation, and high-curvature segments. The comparison isolates both levels of the hierarchy:
           </p>
+          <div class="baseline-list">
+            <div><strong>B1</strong><span>CA-MPC + kinematics-based PI execution</span></div>
+            <div><strong>B2</strong><span>CU-MPC + concurrent-learning execution layer</span></div>
+            <div class="proposed-baseline"><strong>MSC</strong><span>CU-MPC + proposed recurrent RL execution layer</span></div>
+          </div>
+
+          <figure class="detail-media-block result-figure">
+            <img src="../assets/figures/MSC_Trajecotry.png" loading="lazy"
+              alt="Trajectory tracking comparison on the M, S, and C paths" />
+            <figcaption>
+              M/S/C trajectory tracking comparison. MSC improves the smoothness and consistency of executed trajectories, particularly in turning segments affected by caster contact nonlinearities.
+            </figcaption>
+          </figure>
+
+          <div class="metric-grid">
+            <article><span>Caster estimation RMSE</span><strong>0.029 / 0.065 / 0.064 rad</strong><small>M / S / C paths</small></article>
+            <article><span>Angular-velocity RMSE</span><strong>0.029 / 0.032 / 0.024 rad/s</strong><small>Lowest across all three paths</small></article>
+            <article><span>Caster misalignment RMSE</span><strong>0.108 / 0.101 / 0.106 rad</strong><small>Lowest across M / S / C</small></article>
+          </div>
+        </section>
+
+        <section class="detail-section">
+          <h2>Uncertainty-Aware Scheduling</h2>
+          <p>
+            The learned predictor outputs both the expected future caster trajectory and its variance. During rapid caster swing, standstill-to-motion transitions, or other singularity-prone conditions, the predicted risk increases. CU-MPC then reduces the influence of the caster-alignment term and strengthens control regularization, preventing uncertain caster estimates from driving abrupt or torque-sensitive plans.
+          </p>
+          <figure class="detail-media-block result-figure">
+            <img src="../assets/figures/MSC_CU_MPC_OPT_result.png" loading="lazy"
+              alt="Caster-state prediction and CU-MPC uncertainty-aware weight scheduling" />
+            <figcaption>
+              Learned caster estimation and prediction during a low-speed in-place rotation. Around the rapid caster transition, predictive uncertainty rises; the caster-aware weight decreases while the control regularization weight increases.
+            </figcaption>
+          </figure>
           <div class="detail-callout">
             <p>
-              The key design idea is to let uncertainty influence both planning and execution: CU-MPC moderates high-level commands when caster predictions are unreliable, while the low-level policy adapts wheel commands to the estimated caster condition.
+              Compared with the kinematics-based estimator, the learned estimator reduced caster-angle RMSE from 0.301 to 0.029 rad on the M path, from 0.289 to 0.065 rad on the S path, and from 0.390 to 0.064 rad on the C path.
             </p>
           </div>
         </section>
 
         <section class="detail-section">
-          <h2>Validation</h2>
+          <h2>Real-World Platform</h2>
           <p>
-            The framework is evaluated in simulation and on a caster-equipped AMR. The experiments focus on caster-sensitive motions such as tight turns and transition maneuvers, examining path-tracking accuracy, caster-state estimation, caster misalignment, and robustness of the realized wheel-level execution.
+            Real-robot validation uses a differential-drive AMR with two freely swiveling caster wheels. Caster encoders provide ground truth only for evaluation. The onboard system includes a LattePanda Sigma computer, motor drivers, a 2D LiDAR, wheel encoders, and an MTi-630R IMU. The navigation software runs on ROS 2 Humble and Nav2.
+          </p>
+          <p>
+            A 2D map is generated offline using a SLAMTEC S3 LiDAR and Cartographer. During operation, wheel-encoder and IMU measurements are fused by an EKF, and AMCL refines localization against the map. This setup evaluates whether the learned execution layer remains effective with filtering delay, friction variation, micro-slip, and real caster contact effects.
+          </p>
+          <figure class="detail-media-block result-figure">
+            <img src="../assets/figures/MSC_realwold_experiment.png" loading="lazy"
+              alt="Real AMR hardware platform and ROS 2 navigation stack visualization" />
+            <figcaption>
+              Real-world experimental setup: the caster-equipped AMR hardware platform and ROS 2 navigation visualization showing localization, global path, MPC trajectory, and LiDAR measurements.
+            </figcaption>
+          </figure>
+        </section>
+
+        <section class="detail-section">
+          <h2>Real-Robot Results</h2>
+          <figure class="detail-media-block result-figure">
+            <img src="../assets/figures/MSC_real_experiment_result.png" loading="lazy"
+              alt="Real-world C-path tracking, caster estimation, and velocity tracking results" />
+            <figcaption>
+              C-path real-robot evaluation. The proposed estimator follows encoder ground truth with less phase lag, while the execution layer improves path and angular-velocity tracking relative to the compared controllers.
+            </figcaption>
+          </figure>
+
+          <div class="metric-grid real-metric-grid">
+            <article><span>Path RMSE</span><strong>0.1163 m</strong><small>Best among compared methods</small></article>
+            <article><span>Angular-velocity RMSE</span><strong>0.0645 rad/s</strong><small>Best among compared methods</small></article>
+            <article><span>Caster estimation RMSE</span><strong>0.1005 rad</strong><small>Encoder ground-truth comparison</small></article>
+            <article><span>Misalignment RMSE</span><strong>0.0849 rad</strong><small>Lowest among compared methods</small></article>
+          </div>
+
+          <p class="result-note">
+            The improved command realization requires greater actuation effort: mean current increased to 0.9731 A. This tradeoff is consistent with the controller applying the additional effort needed to follow the requested motion under caster-induced resistance.
+          </p>
+        </section>
+
+        <section class="detail-section">
+          <h2>Key Takeaway</h2>
+          <p>
+            Caster effects are not only a disturbance-rejection problem and not only a planning problem. The experiments indicate that the planning–execution gap is reduced most reliably when uncertainty-aware planning and contact-consistent command realization are designed together. MSC therefore treats caster-state uncertainty as information shared across the hierarchy rather than an isolated estimation output.
           </p>
         </section>
 
@@ -122,6 +213,9 @@
           <p>
             <a class="text-link" href="../index.html#msc-paper">MSC: Multi-Stage Caster-aware Control Framework with Uncertainty-Aware NMPC and RL-based Execution Layer →</a>
           </p>
+          <p class="publication-citation">
+            J. Park, J. Lee, J. Lim, K. H. Choi, and K.-S. Kim, <em>IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)</em>, 2026.
+          </p>
         </section>
       </div>
 
@@ -129,9 +223,13 @@
         <dl>
           <div><dt>Status</dt><dd>Accepted to IROS 2026</dd></div>
           <div><dt>Area</dt><dd>Industrial AMR control</dd></div>
-          <div><dt>Methods</dt><dd>CU-MPC, reinforcement learning, recurrent state estimation</dd></div>
-          <div><dt>Platform</dt><dd>Isaac Sim and caster-equipped AMR</dd></div>
-          <div><dt>Media</dt><dd>Framework figure, experiment preview, and project presentation</dd></div>
+          <div><dt>Problem</dt><dd>Passive-caster planning–execution gap</dd></div>
+          <div><dt>High Level</dt><dd>Caster-uncertainty-aware NMPC</dd></div>
+          <div><dt>Low Level</dt><dd>GRU estimator/predictor + PPO actor–critic</dd></div>
+          <div><dt>Output</dt><dd>Left/right wheel-speed targets</dd></div>
+          <div><dt>Simulation</dt><dd>NVIDIA Isaac Sim</dd></div>
+          <div><dt>Robot Software</dt><dd>ROS 2 Humble · Nav2</dd></div>
+          <div><dt>Validation</dt><dd>M/S/C simulation paths and real C-path experiment</dd></div>
         </dl>
       </aside>
     </section>
