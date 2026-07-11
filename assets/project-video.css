@@ -1,0 +1,22 @@
+.detail-video-wrap {
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: #000;
+}
+
+.detail-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  background: #000;
+}
+
+@media (max-width: 800px) {
+  .detail-video-wrap {
+    width: 100%;
+  }
+}
