@@ -6,13 +6,22 @@ const navLinks = [...document.querySelectorAll('.site-nav a')];
 const sections = [...document.querySelectorAll('main section[id]')];
 
 const savedTheme = localStorage.getItem('theme');
-const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-root.dataset.theme = savedTheme || (prefersLight ? 'light' : 'dark');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+root.dataset.theme = savedTheme || (prefersDark ? 'dark' : 'light');
+
+function updateThemeButton() {
+  if (!themeToggle) return;
+  const isDark = root.dataset.theme === 'dark';
+  themeToggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+  themeToggle.setAttribute('title', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+}
+
+updateThemeButton();
 
 themeToggle?.addEventListener('click', () => {
-  const nextTheme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-  root.dataset.theme = nextTheme;
-  localStorage.setItem('theme', nextTheme);
+  root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('theme', root.dataset.theme);
+  updateThemeButton();
 });
 
 menuToggle?.addEventListener('click', () => {
@@ -28,20 +37,6 @@ navLinks.forEach((link) => {
   });
 });
 
-const revealObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  },
-  { threshold: 0.12 }
-);
-
-document.querySelectorAll('.reveal').forEach((element) => revealObserver.observe(element));
-
 const sectionObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
@@ -56,4 +51,5 @@ const sectionObserver = new IntersectionObserver(
 
 sections.forEach((section) => sectionObserver.observe(section));
 
-document.getElementById('year').textContent = new Date().getFullYear();
+const year = document.getElementById('year');
+if (year) year.textContent = new Date().getFullYear();
