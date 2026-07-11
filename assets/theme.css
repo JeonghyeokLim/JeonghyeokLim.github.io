@@ -1,0 +1,107 @@
+.inline-link {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.theme-toggle {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--bg);
+  cursor: pointer;
+  transition: color .16s ease, border-color .16s ease, background .16s ease;
+}
+
+.theme-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sun-icon { display: none; }
+html[data-theme="dark"] .moon-icon { display: none; }
+html[data-theme="dark"] .sun-icon { display: block; }
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #101317;
+  --surface: #171b20;
+  --text: #e8ebef;
+  --muted: #aab2bd;
+  --line: #30363d;
+  --accent: #82b7ff;
+  --accent-dark: #5d9eef;
+  --soft-blue: #1a2737;
+}
+
+html[data-theme="dark"] body,
+html[data-theme="dark"] .detail-page {
+  background: var(--bg);
+}
+
+html[data-theme="dark"] .site-header {
+  background: rgba(16, 19, 23, .96);
+}
+
+html[data-theme="dark"] .button.secondary,
+html[data-theme="dark"] .publication-card,
+html[data-theme="dark"] .project-card,
+html[data-theme="dark"] .site-nav,
+html[data-theme="dark"] .profile-image {
+  background: #15191e;
+}
+
+html[data-theme="dark"] .section-title h2,
+html[data-theme="dark"] .publication-content h4,
+html[data-theme="dark"] .project-category > h3 {
+  color: #d8dde4;
+}
+
+html[data-theme="dark"] .tags span {
+  color: #c7cdd5;
+  background: #272d34;
+}
+
+html[data-theme="dark"] .empty-state,
+html[data-theme="dark"] .project-copy small,
+html[data-theme="dark"] .disabled-link {
+  color: #7f8995;
+}
+
+html[data-theme="dark"] .social-button {
+  background: #454b53;
+}
+
+html[data-theme="dark"] .social-button:hover {
+  background: #5a626c;
+}
+
+html[data-theme="dark"] .detail-media {
+  color: #9da6b1;
+  border-color: #48505a;
+}
+
+@media (max-width: 800px) {
+  .theme-toggle {
+    margin-left: auto;
+  }
+
+  html[data-theme="dark"] .site-nav {
+    background: #15191e;
+  }
+}
