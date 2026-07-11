@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="../assets/theme.css" />
 </head>
 <body class="detail-page">
   <header class="detail-header">
@@ -24,7 +25,12 @@
 
     <section class="detail-layout container">
       <div>
-        <div class="detail-media">Framework figure, experiment video, or AMR image</div>
+        <div class="detail-media detail-video-wrap">
+          <video class="detail-video" autoplay muted loop playsinline controls preload="metadata">
+            <source src="../assets/videos/msc-demo.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
 
         <section class="detail-section">
           <h2>Overview</h2>
@@ -54,7 +60,10 @@
 
         <section class="detail-section">
           <h2>Media and Results</h2>
-          <p>Experiment videos, quantitative comparisons, and the final paper link will be added here.</p>
+          <p>
+            The video above is configured to start automatically, remain muted, and repeat continuously.
+            Quantitative comparisons and the final paper link will be added after the proceedings are released.
+          </p>
         </section>
       </div>
 
